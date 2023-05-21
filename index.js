@@ -8,6 +8,8 @@ app.use(express.json());
 
 const port = 3000;
 
+const {canciones_function} = require('./canciones.js');
+
 app.listen(port, () => {
     console.log("Servidor funcionando");
     console.log(port);
@@ -18,14 +20,14 @@ app.get('/', (req, res) => {
 })
 
 app.get('/canciones', (req, res) => {
-    const canciones = JSON.parse(fs.readFileSync('./canciones.json', 'utf8'));
+    const canciones = canciones_function();
     res.json(canciones);
 })
 
 app.post('/canciones', (req, res) => {
     //console.log(req.body);
     const cancion = req.body;
-    const canciones = JSON.parse(fs.readFileSync('./canciones.json', 'utf8'));
+    const canciones = canciones_function();
     canciones.push(cancion);
     fs.writeFileSync('./canciones.json', JSON.stringify(canciones));
     res.send('Canción agregada con éxito');
@@ -33,7 +35,7 @@ app.post('/canciones', (req, res) => {
 
 app.delete('/canciones/:id', (req, res) => {
     const {id} = req.params;
-    const canciones = JSON.parse(fs.readFileSync('./canciones.json', 'utf-8'));
+    const canciones = canciones_function();
     const index = canciones.findIndex(c => c.id == id);
     canciones.splice(index, 1)
     fs.writeFileSync('./canciones.json', JSON.stringify(canciones));
@@ -43,7 +45,7 @@ app.delete('/canciones/:id', (req, res) => {
 app.put('/canciones/:id', (req, res) => {
     const {id} = req.params;
     const cancion = req.body;
-    const canciones = JSON.parse(fs.readFileSync('./canciones.json', 'utf-8'));
+    const canciones = canciones_function();
     const index = canciones.findIndex(c => c.id == id);
     canciones[index] = cancion;
     fs.writeFileSync('./canciones.json', JSON.stringify(canciones));
