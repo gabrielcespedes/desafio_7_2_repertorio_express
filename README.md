@@ -1,4 +1,5 @@
 # desafio_7_2_repertorio_express
+**Rama main, la rama pruebaR es sólo de prueba**
 
 Uso de Express JS para manipulación de JSON local.
 
